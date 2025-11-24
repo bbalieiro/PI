@@ -13,12 +13,12 @@ key = carregar_chave()
 
 modelo = TreinadorModelo()
 
-st.title("📈 Sistema de Regressão Linear com Criptografia AES (pyaes)")
+st.title("Projeto Integrador - Augusto, Bruno e Giovani")
 
 # ============================================================
 # TREINO
 # ============================================================
-st.header("⚙️ Treinar Modelo")
+st.header("Treinar Modelo")
 
 file_train = st.file_uploader("Envie o CSV de treino", type=["csv"], key="train")
 
@@ -47,7 +47,7 @@ if file_train:
 # ============================================================
 # TESTE
 # ============================================================
-st.header("🧪 Testar Modelo")
+st.header("Testar Modelo")
 
 file_test = st.file_uploader("Envie o CSV de teste", type=["csv"], key="test")
 tem_rotulos = st.checkbox("O CSV contém rótulo ('time')?")
