@@ -113,3 +113,48 @@ st.header("🔁 Resetar Modelo")
 if st.button("Resetar Modelo"):
     modelo.resetar()
     st.success("Modelo resetado.")
+
+
+
+# ------------------- DESCRIPTOGRAFAR ARQUIVO (.zip.enc) -------------------
+st.header("🔓 Descriptografar arquivo (.zip.enc)")
+
+file_enc = st.file_uploader("Envie um arquivo .zip.enc", type=["enc"])
+
+if file_enc:
+    enc_bytes = file_enc.read()
+
+    try:
+        # descriptografar
+        zip_bytes = decrypt_bytes_fernet(enc_bytes)
+
+        # extrair ZIP em memória
+        import zipfile
+        import io
+
+        bio = io.BytesIO(zip_bytes)
+        with zipfile.ZipFile(bio) as z:
+            file_list = z.namelist()
+
+            if len(file_list) == 0:
+                st.error("O arquivo ZIP está vazio.")
+            elif len(file_list) > 1:
+                st.warning("O ZIP contém vários arquivos. Será retornado o primeiro.")
+
+            # pegar o primeiro arquivo dentro do zip
+            extracted_name = file_list[0]
+            extracted_bytes = z.read(extracted_name)
+
+            st.success(f"Arquivo recuperado: {extracted_name}")
+
+            # download do arquivo recuperado
+            st.download_button(
+                "📥 Baixar arquivo descriptografado",
+                data=extracted_bytes,
+                file_name=extracted_name,
+                mime="text/csv",
+            )
+
+    except Exception as e:
+        st.error(f"Erro ao descriptografar o arquivo: {e}")
+
