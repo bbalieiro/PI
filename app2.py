@@ -11,10 +11,10 @@ from utils import compress_bytes_to_zip, encrypt_bytes_fernet, decrypt_bytes_fer
 
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Tinos:wght@300;400;600&display=swap');
 
     html, body, [class*="css"]  {
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Tinos', sans-serif;
     }
     </style>
 """, unsafe_allow_html=True)
