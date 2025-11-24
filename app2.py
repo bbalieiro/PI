@@ -1,12 +1,4 @@
-st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-    html, body, [class*="css"]  {
-        font-family: 'Poppins', sans-serif;
-    }
-    </style>
-""", unsafe_allow_html=True)
 
 
 # app.py
@@ -16,6 +8,16 @@ import io
 import os
 from modelo import TreinadorModelo
 from utils import compress_bytes_to_zip, encrypt_bytes_fernet, decrypt_bytes_fernet, carregar_chave, KEY_PATH
+
+st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    html, body, [class*="css"]  {
+        font-family: 'Poppins', sans-serif;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 st.set_page_config(page_title="Projeto Integrador", layout="centered")
 st.title("Projeto Integrador - Augusto, Bruno e Giovani")
