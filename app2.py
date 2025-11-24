@@ -87,12 +87,6 @@ if file_test:
 
     # CSV puro (download)
     csv_bytes = preds_df.to_csv(index=False).encode("utf-8")
-    st.download_button(
-        "📥 Baixar previsões (CSV)",
-        data=csv_bytes,
-        file_name="predicoes.csv",
-        mime="text/csv"
-    )
 
     # CSV comprimido + criptografado
     zip_bytes = compress_bytes_to_zip(csv_bytes, "predicoes.csv")
