@@ -71,16 +71,6 @@ if file_test:
         mime="text/csv"
     )
 
-    # CSV criptografado
-    enc_preds = encrypt_bytes(csv_bytes, key)
-
-    st.download_button(
-        "🔒 Baixar previsões criptografadas (AES)",
-        data=enc_preds,
-        file_name="predicoes.csv.aes",
-        mime="application/octet-stream"
-    )
-
     if desempenho is not None:
         st.success(f"Desempenho (MSE): {desempenho:.4f}")
 
