@@ -6,8 +6,8 @@ import os
 from modelo import TreinadorModelo
 from utils import compress_bytes_to_zip, encrypt_bytes_fernet, decrypt_bytes_fernet, carregar_chave, KEY_PATH
 
-st.set_page_config(page_title="Regressão Linear - Compress+Encrypt", layout="centered")
-st.title("📈 Regressão Linear — Uploads comprimidos e criptografados (server-side)")
+st.set_page_config(page_title="Projeto Integrador", layout="centered")
+st.title("Projeto Integrador - Augusto, Bruno e Giovani")
 
 st.sidebar.header("Configuração")
 st.sidebar.write("Se possível, defina FERNET_KEY em Settings → Secrets para produção.")
@@ -22,7 +22,7 @@ except Exception as e:
 modelo = TreinadorModelo()
 
 # ------------------- TREINO -------------------
-st.header("⚙️ Treinar modelo")
+st.header("Treinar modelo")
 file_train = st.file_uploader("Envie o CSV de treino (com coluna 'time')", type=["csv"], key="train")
 
 if file_train:
@@ -64,7 +64,7 @@ if file_train:
     )
 
 # ------------------- TESTE -------------------
-st.header("🧪 Testar modelo")
+st.header("Testar modelo")
 file_test = st.file_uploader("Envie o CSV de teste", type=["csv"], key="test")
 tem_rotulos = st.checkbox("O CSV contém rótulos ('time')?")
 
