@@ -1,41 +1,70 @@
 # utils.py
+import io
+import zipfile
+from pathlib import Path
+from cryptography.fernet import Fernet
+import streamlit as st
 import os
-import pyaes
 
-KEY_FILE = "secret.key"
+KEY_PATH = Path("secret.key")
 
-def gerar_chave():
+def _get_key_from_secrets():
     """
-    Gera chave AES-256 e salva em secret.key.
+    Retorna chave (bytes) definida em st.secrets['FERNET_KEY'] se existir.
     """
-    if os.path.exists(KEY_FILE):
-        return open(KEY_FILE, "rb").read()
-    key = os.urandom(32)  # 32 bytes = AES-256
-    open(KEY_FILE, "wb").write(key)
+    try:
+        key = st.secrets.get("FERNET_KEY")
+        if key:
+            return key.encode() if isinstance(key, str) else key
+    except Exception:
+        return None
+    return None
+
+def gerar_chave_local(save_path: Path = KEY_PATH) -> bytes:
+    """
+    Gera e salva secret.key localmente (apenas dev).
+    """
+    if save_path.exists():
+        return save_path.read_bytes()
+    key = Fernet.generate_key()
+    save_path.write_bytes(key)
     return key
 
-def carregar_chave():
+def carregar_chave() -> bytes:
     """
-    Carrega chave existente ou gera uma nova.
+    Fluxo para obter key:
+     1) st.secrets (preferido)
+     2) secret.key local
+     3) gerar secret.key local (dev)
     """
-    if not os.path.exists(KEY_FILE):
-        return gerar_chave()
-    return open(KEY_FILE, "rb").read()
+    key = _get_key_from_secrets()
+    if key:
+        return key
+    if KEY_PATH.exists():
+        return KEY_PATH.read_bytes()
+    return gerar_chave_local(KEY_PATH)
 
-def encrypt_bytes(data: bytes, key: bytes = None) -> bytes:
+# ----------------- compressão em memória -----------------
+def compress_bytes_to_zip(data_bytes: bytes, filename_in_zip: str) -> bytes:
     """
-    Criptografa bytes com AES-CTR.
+    Retorna bytes de um ZIP (ZIP_DEFLATED) contendo filename_in_zip com o conteúdo data_bytes.
     """
+    bio = io.BytesIO()
+    with zipfile.ZipFile(bio, mode="w", compression=zipfile.ZIP_DEFLATED) as z:
+        z.writestr(filename_in_zip, data_bytes)
+    return bio.getvalue()
+
+# ----------------- encrypt / decrypt --------------------
+def encrypt_bytes_fernet(data: bytes, key: bytes = None) -> bytes:
     if key is None:
         key = carregar_chave()
-    aes = pyaes.AESModeOfOperationCTR(key)
-    return aes.encrypt(data)
+    f = Fernet(key)
+    return f.encrypt(data)
 
-def decrypt_bytes(data: bytes, key: bytes = None) -> bytes:
-    """
-    Descriptografa bytes com AES-CTR.
-    """
+def decrypt_bytes_fernet(token: bytes, key: bytes = None) -> bytes:
     if key is None:
         key = carregar_chave()
-    aes = pyaes.AESModeOfOperationCTR(key)
-    return aes.decrypt(data)
+    f = Fernet(key)
+    return f.decrypt(token)
+
+
