@@ -56,7 +56,7 @@ if file_train:
     st.info(f"Arquivo comprimido e criptografado salvo localmente em: {save_path}")
 
 
-    )
+    
 
 # ------------------- TESTE -------------------
 st.header("Testar modelo")
