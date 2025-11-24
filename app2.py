@@ -6,8 +6,8 @@ import os
 from modelo import TreinadorModelo
 from utils import compress_bytes_to_zip, encrypt_bytes_fernet, decrypt_bytes_fernet, carregar_chave, KEY_PATH
 
-st.set_page_config(page_title="Regressão Linear - Compress+Encrypt", layout="centered")
-st.title("📈 Regressão Linear — Uploads comprimidos e criptografados (server-side)")
+st.set_page_config(page_title="Projeto Integrador", layout="centered")
+st.title("Projeto Integrador - Bruno, Augusto e Giovani")
 
 st.sidebar.header("Configuração")
 st.sidebar.write("Se possível, defina FERNET_KEY em Settings → Secrets para produção.")
@@ -22,7 +22,7 @@ except Exception as e:
 modelo = TreinadorModelo()
 
 # ------------------- TREINO -------------------
-st.header("⚙️ Treinar modelo")
+st.header("Treinar modelo")
 file_train = st.file_uploader("Envie o CSV de treino (com coluna 'time')", type=["csv"], key="train")
 
 if file_train:
@@ -55,16 +55,11 @@ if file_train:
 
     st.info(f"Arquivo comprimido e criptografado salvo localmente em: {save_path}")
 
-    # disponibiliza download criptografado
-    st.download_button(
-        "🔒 Baixar (comprimido + criptografado)",
-        data=enc_bytes,
-        file_name=f"{file_train.name}.zip.enc",
-        mime="application/octet-stream"
+
     )
 
 # ------------------- TESTE -------------------
-st.header("🧪 Testar modelo")
+st.header("Testar modelo")
 file_test = st.file_uploader("Envie o CSV de teste", type=["csv"], key="test")
 tem_rotulos = st.checkbox("O CSV contém rótulos ('time')?")
 
@@ -84,15 +79,6 @@ if file_test:
     except Exception as e:
         st.error(f"Erro ao testar: {e}")
         st.stop()
-
-    # CSV puro (download)
-    csv_bytes = preds_df.to_csv(index=False).encode("utf-8")
-    st.download_button(
-        "📥 Baixar previsões (CSV)",
-        data=csv_bytes,
-        file_name="predicoes.csv",
-        mime="text/csv"
-    )
 
     # CSV comprimido + criptografado
     zip_bytes = compress_bytes_to_zip(csv_bytes, "predicoes.csv")
