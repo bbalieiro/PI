@@ -11,10 +11,36 @@ from utils import compress_bytes_to_zip, encrypt_bytes_fernet, decrypt_bytes_fer
 
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Tinos:wght@300;400;600&display=swap');
+    /* Importa a fonte Tinos do Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Tinos:wght@400;700&display=swap');
 
+    /* Aplica Tinos para TUDO no app */
     html, body, [class*="css"]  {
-        font-family: 'Tinos', sans-serif;
+        font-family: 'Tinos', serif !important;
+    }
+
+    /* Força Tinos em títulos gerados por Streamlit */
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Tinos', serif !important;
+    }
+
+    /* Força Tinos em títulos criados por st.title, st.header, st.subheader */
+    .css-10trblm,   /* título principal */
+    .css-1v0mbdj,   /* header */
+    .css-5rimss,    /* subheader */
+    .css-183lzff {  /* fallback */
+        font-family: 'Tinos', serif !important;
+    }
+
+    /* Força Tinos dentro de blocos markdown */
+    [class*="stMarkdown"] h1,
+    [class*="stMarkdown"] h2,
+    [class*="stMarkdown"] h3,
+    [class*="stMarkdown"] h4,
+    [class*="stMarkdown"] h5,
+    [class*="stMarkdown"] h6,
+    [class*="stMarkdown"] p {
+        font-family: 'Tinos', serif !important;
     }
     </style>
 """, unsafe_allow_html=True)
